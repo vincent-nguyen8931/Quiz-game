@@ -141,30 +141,15 @@ function generatePassword(pwChars, charAmount) {
 Lessons Learned
 ----------------
 
-When attemping to make the code check for proper input I ran into several issues. This is a list of methods I attempted with no success. The charCodeAt() was perplexing me because the characters being compared are specific and standard across all browsers, making it the safest choice for me to check my inputs with. However, no input inside ever matched nor did any parameter set function properly. 
-
-Indexof did not function in the way I expected as it did not return a usuable value but rather displayed if something exists within the array. There was a method to make this work but would have extended my if statement to an unsightly state and still may not have worked as I would use the logic as shown in the code snippet below.
-
-* comparing to alphabet
-* uncmparing to alpahbet
-* indexof
-* accepting only numbers via ===
-* not accepting letters via ===
-* charCodaAt()
+Attempted to use for loop when creating buttons for the answer. The problem I ran into is that I could not find a way to iterate through the variety of answers while also continuing the loop. I tried to use double for loops with one interating the creation of the button while the second loop created the text for the button. When i tried to change the attribute of the button, allowing for an id call, the text called afterwards would not be added to the button. I settled on duplicating what the code is doing four times while changing the content of each answer box statically.
 
 ```
-  // if (charLimit === 1 ||
-  //   charLimit === 2 ||
-  //   charLimit === 3 ||
-  //   charLimit === 4 ||
-  //   charLimit === 5 ||
-  //   charLimit === 6 ||
-  //   charLimit === 7 ||
-  //   charLimit === 8 ||
-  //   charLimit === 9 ||
-  //   charLimit === 0) {
+// for (i = 1; i < 5; i++){
+  // var li = document.createElement("button")
+  // li.setAttribute("id", "button" + [i])
+  // li.textContent = questionResponse[questionNumber].a
+  responses.appendChild(li)
 ```
-I received help from our class TA's and found a method that did produce the results I expected. It was to return null when the input is incorrect instead of restarting the loop over. This helped to stop the rest of the loop from running or bypassing the error checks if a different error was passed.
 
 Credits
 ---------------
