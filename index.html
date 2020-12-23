@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Quiz Challenge</title>
   <!-- Font from google for text -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -11,20 +11,25 @@
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-
-  <!-- script made in this folder -->
-
+   <!-- timer -->
+ <p id="time">Time Remaining:</p>
   <!-- Header -->
   <h1>Quiz Challenge</h1>
-  <p>Answer the questions that appear by clicking on the answer you believe is correct. Wrong answers will deduct time from the timer. Your score is determined by how much time is remaining when you answer the last question.</p>
-  <button id="start-game">Start game</button>
-  <ul id="Responses"></ul>
   <!-- quiz body-->
-  
+  <p id="intro">Answer the questions that appear by clicking on the answer you believe is correct. Wrong answers will deduct time from the timer. Your score is determined by how much time is remaining when you answer the last question.</p>
+  <button id="start-game">Start game</button>
+  <ul id="Responses">
+    <li id="button1"></li>
+    <li id="button2"></li>
+    <li id="button3"></li>
+    <li id="button4"></li>
+    </ul>
   <!-- high score  -->
+  <p id="result"></p>
   
 <!-- quiz can be any kind of question -->
 <!-- style is up to us -->
+<!-- script made in this folder -->
 <script src="script.js"></script>
 </body>
 </html>

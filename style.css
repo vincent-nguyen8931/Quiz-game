@@ -16,7 +16,7 @@ h1 {
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 18px;
-  width: 500px;
+  width: 800px;
   margin: auto;
   background-color: rgba(255, 166, 0, 0.664);
 }
@@ -47,8 +47,11 @@ li {
   line-height: 1.5;
 }
 
-li button:hover {
-  background-color: #080705;
+#time {
+  position: absolute;
+  margin-left: 70%;
+  margin-bottom: 80%;
+  float: right;
 }
 
 
