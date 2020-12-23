@@ -79,7 +79,7 @@ function createResponses() {
 }
 // checks the response of the answer and makes sure that there are questions left to ask.
 function checkResponse() {
-  if (questionNumber < questionResponse.length -1) {
+  if (questionNumber < questionResponse.length - 1) {
   responses.addEventListener("click", function(event) {
     event.preventDefault()
     var element = event.target
