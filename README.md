@@ -1,23 +1,24 @@
 # Quiz-game
 
-![image](Assets\Password-generator-image.png)
+![image](Quiz-game-landing-page.png)
 
 Description
 ------------
 
-This is a password generator. It will ask for the amount of characters desired in password then whether the user wants the password to have upper case letters, lower case letters, numbers, and/or, special characters.
+This is a quiz game. It will ask if you would like to start the game. After starting the game, the questions will appear in the large font and you must choose the correct answer from the buttons shown. Your score is the time you have remaining.
 
  Table of contents
 ---------------
 [Tools used](#Tools-used)<br />
 [Deployed here](#Deployed-here)<br />
 [What is added](#What-is-added)
- * [Generate alphabet](#Generate-alphabet)
- * [Making password choices](#Making-password-choices)
- * [Check proper input](#Check-proper-input)
- * [Generate password](#Generate-password)
+* [Start Game](#Start-game)
+* [Display timer](#Display-timer)
+* [Display question](#Display-question)
+* [Generate responses](#Generate-responses)
+* [Check response](#Check-response)
+* [End game](#End-game)
 
-[Lessons learned](#Lessons-learned) <br />
 [Credits](#Credits)<br />
 [License](#License)
 
@@ -35,121 +36,106 @@ Deployed here
 -------------
 
 Below is the link to the deployed webpage. <br />
-[Link to site](https://vincent-nguyen8931.github.io/Password-generator/)
+[Link to site](https://vincent-nguyen8931.github.io/Quiz-game/)
 
 
 What is added
 ------------------
 
-Generate alphabet
------------------------------
+Start game
+-----------------------
 
-This first function to discuss is how an alphabet is generated. This works by assigning the first and last characters of the alphabet to different variables. These variables use charCodeAt(0) to set their integer based on the UTF-16 code index. The "for loop" will iterate pushing each character of the alphabet onto the array as a string until it adds Z. 
-
+This function will run the bulk of the program by calling other functions created. 
 ```
-function genAlphabet(A, Z) {
-  var alphabet = [], i = A.charCodeAt(0), j = Z.charCodeAt(0);
-  for (; i <= j; i++) {
-    alphabet.push(String.fromCharCode(i));
+function startGame() {
+  if (questionNumber < questionResponse.length) {
+    displayTimer()
+    displayQuestion()
+    createResponses()
+    checkResponse()
+    // questionNumber++
+  } else {
+    endGame()
   }
-  return alphabet;
 }
 ```
-Making password choices
+
+Display timer
+---------------
+The time is displayed on the top right of the question box. A feature to be implemented is decrementing time for incorrect guesses.
+```
+function displayTimer(timeLeft) {
+  var timeLeft = setInterval(function() { 
+    remainingTime.textContent = ("Time Remaining: " + timer--)
+     if (timer < 0) {
+       clearInterval(timeLeft)
+     }}, 1000)
+```
+
+Display question
+-----------
+The questions will be displayed by showing the buttons that allow for answering, hiding the start button, hiding the landing page text, and generating the question in the h1 tag.
+```
+function displayQuestion() {
+  responses.style.display = "block" 
+  startBtn.style.display = "none"
+  intro.textContent = ""
+  h1Body.textContent = questionResponse[questionNumber].q
+}
+```
+
+Generate responses
 ----------------
-The next function is creating the array of characters that will be used to generate a password. Below is the top part of the code that checks which characters the user wants to be used when generating a password. 
+The possible choices for the answer generated in the array will be inserted into each button that is created for answers from the HTML.
 ```
-function genPasswordChoices() {
-  // array to hold user's choice of password character types 
-  var storeChoices = []
-  // check to see if user wants upper case letters
-  var lettersUp = confirm("Do you want upper case letters in your password?")
-  // check to see if user wants lower case letters
-  var lettersLow = confirm("Do you want lower case letters in your password?")
-  // check to see if user wants numbers
-  var num = confirm("Do you want numbers in your password?")
-  // check to see if user wants special characters
-  var sChar = confirm("Do you want special characters in your password?")
-```
-This is an example of one of the character types that can be generated.
-```
-//  if sChar is true, use this variable
-if (sChar === true) {
-  var str = " !\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
-  var special = str.split("")
-  // push special characters onto storeChoices array
-  for (i = 0; i < special.length; i++) {
-  storeChoices.push(special[i])
-  } 
-```
-
-Check proper input
-------------------------
-
-The function operates by asking the user for their input. The input is taken and split into an array. The array is ran through using a "for loop" interating each character comparing it to the if statement that checks if the input is a number. If the input is not a number, the function ends and sends a null which stops the password generation.
-```
-function checkInput() {
-  var charLimit = prompt("Please choose amount of characters for password.")
-  var charSplit = charLimit.split("")
-  var numCheck = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-
-  for (i = 0; i < charSplit.length; i++) {
-    // Checks for proper numerical values
-    if (numCheck.includes(charSplit[i]) !== true) {
-      alert("Please use a number between 8 and 128.")
-      return null
-    } else { 
-      
-      while (charLimit < 8 || charLimit > 128) {
-      
-        // if characters are less than 8
-        if (charLimit < 8) {
-          alert("Password needs minimum of 8 characters.")
-        } 
-      
-        // if characters are greater than 128
-        if (charLimit > 128) {
-        alert("Password has maximum of 128 characters.")
-        }
-        // repeats checking for proper user's input
-        return null
-      }  
-    } 
-  } return charLimit
+function createResponses() {
+  btn1.textContent = questionResponse[questionNumber].response.a
+  btn2.textContent = questionResponse[questionNumber].response.b
+  btn3.textContent = questionResponse[questionNumber].response.c
+  btn4.textContent = questionResponse[questionNumber].response.d
 }
 ```
-Generate password
---------------
 
-This function is linked to the function writePassword that is given as a starting function. Within this function, the characters selected for password generation and the amount of characters for the password are called here. The function runs the "for loop" generating one character at a time at random and storing in indexGen variable. The last step takes the password generated, removes all the commas and spaces, then passes the variable password where it will be displayed on the webpage. 
+Check response
+----------
+This function checks the user's response against the correct answers set in the questions array. It will also check to make sure that there is a question that exists to prevent the program from asking more questions than exist.
 ```
-// Use characters selected for password and amount of characters desired to make the password. 
-function generatePassword(pwChars, charAmount) {
-  var pwGenConvert = []
-  // choose random number based on characters selected and amount of characters chosen
-  for (i = 0; i < charAmount; i++){
-    indexGen = Math.floor(Math.random(pwChars) * pwChars.length)
-    // pushes character from pwChars based on index generated by indexGen into pwGenConvert
-    pwGenConvert.push(pwChars[indexGen])
-    // Takes the pwGenConvert array, removes the commas, and places the resulting elements into password variable.
-    password = pwGenConvert.join("")
-  }
-  return password
+function checkResponse() {
+  if (questionNumber < questionResponse.length -1) {
+  responses.addEventListener("click", function(event) {
+    event.preventDefault()
+    var element = event.target
+    if (element.matches("#button1") === true && questionResponse[questionNumber].correctResponse === "a") {
+      result.textContent = "Correct"
+      startGame()
+      setTimeout(function() {
+        result.textContent = ""
+      }, 1000)
+    }
+```
+
+End game
+--------------------
+This ends the game by displaying the high scores, removing all the responses, and stopping the timer.
+```
+function endGame() {
+  h1Body.textContent = "High score!"
+  responses.style.display = "none"
+  clearInterval(timeLeft)
 }
 ```
 
 Lessons Learned
 ----------------
 
-Attempted to use for loop when creating buttons for the answer. The problem I ran into is that I could not find a way to iterate through the variety of answers while also continuing the loop. I tried to use double for loops with one interating the creation of the button while the second loop created the text for the button. When i tried to change the attribute of the button, allowing for an id call, the text called afterwards would not be added to the button. I settled on duplicating what the code is doing four times while changing the content of each answer box statically.
+I ran into a strange situation where the incrementing variable is called 1 + (n+1) times for reasons unknown to me. Things I have tried were:
+* reconstruct the questions array to house an individual true or false response for the possible answers.
+* change where the check for question length happens to before an answer check is run
+* have the answers increment instead of the start game function
+* remove the click event listener since it appeared as though multiple clicks were being counted despite only a single click being used when I checked in the console logs
 
-```
-// for (i = 1; i < 5; i++){
-  // var li = document.createElement("button")
-  // li.setAttribute("id", "button" + [i])
-  // li.textContent = questionResponse[questionNumber].a
-  responses.appendChild(li)
-```
+The solution still eludes me from these steps.
+
 
 Credits
 ---------------

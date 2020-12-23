@@ -35,7 +35,7 @@ ul {
   padding: 0;
   background-color: white;
 }
-
+/* gives each button the blue background with white text */
 li {
   height: 50px;
   margin-top: 5px;
@@ -48,9 +48,9 @@ li {
 }
 
 #time {
-  position: absolute;
+  position: relative;
   margin-left: 70%;
-  margin-bottom: 80%;
+  /* margin-bottom: 80%; */
   float: right;
 }
 
