@@ -12,8 +12,8 @@ var timeLeft = 0
 var timer = 120
 var questionNumber = 0
 var questionResponse = [
-  { q: "What is the temperature of water freezing?", response: { a: "30 F", b: "32 F", c: "33 F", d: "31 F", }, correctResponse: "32 F" },
-  { q: "Which is the max amount of times a piece of paper can be folded?", response: { a: "6", b: "8", c: "7", d: "5", }, correctResponse: "7" },
+  { q: "What is the temperature of water freezing?", response: { a: "30 F", b: "32 F", c: "33 F", d: "31 F"}, correctResponse: "32 F" },
+  { q: "Which is the max amount of times a piece of paper can be folded?", response: { a: "6", b: "8", c: "7", d: "5"}, correctResponse: "7" },
   { q: "What do blue whales eat?", response: { a: "Krill", b: "Plankton", c: "Coral", d: "Algae", }, correctResponse: "Krill" },
   { q: "In the US, which car color has the least amount of accidents?", response: { a: "Silver", b: "Blue", c: "Red", d: "White", }, correctResponse: "White" },
   { q: "Which fast food restaurant is the most popular in the US?", response: { a: "Jack in the Box", b: "McDonalds", c: "Burger King", d: "Taco Bell", }, correctResponse: "McDonalds" }
@@ -29,7 +29,8 @@ function startGame() {
   // if (questionNumber < questionResponse.length) {
 
   displayQuestion()
-  createResponses()
+  createButtons() 
+  // createResponses()
   // checkResponse()
   // questionNumber++
   console.log(questionNumber)
@@ -53,33 +54,61 @@ function displayTimer() {
     }
   }, 1000)
 }
-// function createButtons() {
-//   var li = document.createElement("button")
-//   li.setAttribute("id", "button1")
-//   console.log(responses.btn1.value)
-//   // li.textContent = questionResponse[questionNumber].response.a
-//   responses.appendChild(li)
-//   var li = document.createElement("button")
-//   li.setAttribute("id", "button2")
-//   // li.textContent = questionResponse[questionNumber].response.b
-//   responses.appendChild(li)
-//   var li = document.createElement("button")
-//   li.setAttribute("id", "button3")
-//   // li.textContent = questionResponse[questionNumber].response.c
-//   responses.appendChild(li)
-//   var li = document.createElement("button")
-//   li.setAttribute("id", "button4")
-//   // li.textContent = questionResponse[questionNumber].response.d
-//   responses.appendChild(li)
-// }
+
+function createButtons() {
+  // questionResponse[questionNumber].response.forEach(element => {
+  //   var li = document.createElement("button")
+  //   li.setAttribute("class", "button")
+  //   li.textContent = element
+  //   responses.appendChild(li)
+  // });
+    var resp = questionResponse[questionNumber].response
+    var answers = Object.values(resp);
+    console.log(answers)
+    responses.innerHTML = ""
+    answers.forEach(element => {
+      var li = document.createElement("button")
+      li.setAttribute("class", "button")
+      li.textContent = element
+      responses.appendChild(li)
+    });
+
+  // // var answers = []
+  // // answers.forEach()
+  // var li = document.createElement("button")
+  // // li.setAttribute("id", "button1")
+  // // li.textContent = questionResponse[questionNumber].response.a
+  // responses.appendChild(li)
+  // var li = document.createElement("button")
+  // li.setAttribute("id", "button2")
+  // // li.textContent = questionResponse[questionNumber].response.b
+  // responses.appendChild(li)
+  // var li = document.createElement("button")
+  // li.setAttribute("id", "button3")
+  // // li.textContent = questionResponse[questionNumber].response.c
+  // responses.appendChild(li)
+  // var li = document.createElement("button")
+  // li.setAttribute("id", "button4")
+  // // li.textContent = questionResponse[questionNumber].response.d
+  // responses.appendChild(li)
+}
 
 
 // generate the responses for each question
 function createResponses() {
-  btn1.textContent = questionResponse[questionNumber].response.a
-  btn2.textContent = questionResponse[questionNumber].response.b
-  btn3.textContent = questionResponse[questionNumber].response.c
-  btn4.textContent = questionResponse[questionNumber].response.d
+  var resp = questionResponse[questionNumber].response
+    var answers = Object.values(resp);
+    console.log(answers)
+    answers.forEach(element => {
+      var li = document.createElement("button")
+      li.setAttribute("class", "button")
+      li.textContent = element
+      responses.replaceChild(li)
+    });
+  // btn1.textContent = questionResponse[questionNumber].response.a
+  // btn2.textContent = questionResponse[questionNumber].response.b
+  // btn3.textContent = questionResponse[questionNumber].response.c
+  // btn4.textContent = questionResponse[questionNumber].response.d
 }
 // checks the response of the answer and makes sure that there are questions left to ask.
 function checkResponse(event) {
@@ -109,7 +138,8 @@ function checkResponse(event) {
     }
     questionNumber++;
     displayQuestion();
-    createResponses();
+    createButtons();
+    // createResponses()
     // responses.removeEventListener("click", function(event)) {}
     // startGame()
   } else {
