@@ -19,54 +19,54 @@
 </head>
 
 <body>
-  <div class="container">
-    <div class="row">
+  <section class="container">
+    <nav class="row">
       <!-- Highscore link -->
       <a class="col position-absolute top-0 start-0 stretched-link" href="#" id="Highscore">
         View highscores
         </p>
       </a>
       <!-- Timer class -->
-      <div class="col d-inline-flex flex-row-reverse position-absolute top-0 end-0" id="Timer">
+      <time class="col d-inline-flex flex-row-reverse position-absolute top-0 end-0" id="Timer">
         Timer:
-      </div>
-    </div>
-  </div>
+      </time>
+    </nav>
+  </section>
 
   <!-- Header -->
-  <div class="container">
-    <div class="row-6">
+  <main class="container">
+    <header class="row-6">
       <h1>Quiz Challenge</h1>
 
       <!-- quiz body-->
-      <div class="col-8" id="intro">Answer the questions that appear by clicking on the answer you believe is correct.
+      <section class="col-8" id="intro">Answer the questions that appear by clicking on the answer you believe is correct.
         Wrong answers will deduct time from the timer. Your score is determined by how much time is remaining when you
-        answer the last question. </p>
-        <!-- <button id="start-game">Start game</button> -->
-      </div>
+        answer the last question. </p> <!-- ending p tag pushes the text down far enough for neat alignment -->
+      </section>
 
       <!-- buttons will be generated within this class -->
-      <div class="d-grid gap-2 d-lg-block" id="Responses">
-      </div>
-    </div>
+      <section class="d-grid gap-2 d-lg-block" id="Responses">
+      </section>
+    </header>
     <!-- displays "Correct" or "Incorrect" after answering question  -->
-    <p id="result"></p>
-    <div class="row">
-      <div class="input-group">
+    <details id="result"></details>
+    <section class="row">
+      <article class="input-group">
+        <!-- allows input of user's name on the highscore page -->
         <input type="text" class="form-control" id="highscoreInput" aria-label="Sizing example input"
           aria-describedby="inputGroup-sizing-default" placeholder="Add name to the highscore chart">
-        <div class="row mt-3">
+        <aside class="row mt-3">
+          <!-- Buttons used during the quiz to navigate to other pages -->
           <button id="submit">Submit</button>
           <button id="backToStart">Back to start</button>
           <button id="start-game">Start game</button>
-        </div>
-      </div>
-    </div>
+        </aside>
+      </article>
+    </section>
+    <!-- Lists the highscores with the names that the user input above -->
     <ol class="list-group" id="highscoresList">
     </ol>
-  </div>
-  <!-- quiz can be any kind of question -->
-  <!-- style is up to us -->
+  </main>
   <!-- script made in this folder -->
   <script src="script.js"></script>
 </body>

@@ -90,13 +90,14 @@ function createButtons() {
 function checkResponse(event) {
   if (questionNumber < questionResponse.length - 1) {
     var element = event.target
-
+    // checks for element matching a button to be true and the text content of said button matches the correctResponse. if true then the answer is correct.
     if (element.matches("button") === true && questionResponse[questionNumber].correctResponse === element.textContent) {
       result.textContent = "Correct"
       setTimeout(function () {
         result.textContent = ""
       }, 1000);
     } else {
+      // Incorrect answers are decremented by 10 seconds on the timer
       result.textContent = "Incorrect"
       clearInterval(timeLeft)
       subtractTime = parseInt(timeLeft)
