@@ -5,12 +5,13 @@ var result = document.querySelector("#result");
 var submitBtn = document.querySelector("#submit");
 var goBack = document.querySelector("#backToStart")
 var highscoreLink = document.querySelector("#Highscore")
+var highscoreClear = document.querySelector("#clearHighscores")
 var highscore = document.querySelector("#highscoreInput");
 var highscoreList = document.querySelector("#highscoresList");
 var responses = document.querySelector("#Responses");
 var remainingTime = document.querySelector("#Timer");
 var timeLeft = 0;
-var timer = 80;
+var timer = 70;
 var questionNumber = 0;
 var questionResponse = [
   { q: "What is the temperature of water freezing?", response: { a: "30 F", b: "32 F", c: "33 F", d: "31 F" }, correctResponse: "32 F" },
@@ -22,7 +23,7 @@ var questionResponse = [
   { q: "What is the common name for dried plums?", response: { a: "Prunes", b: "Raisins", c: "Dried plums", d: "Kiwi", }, correctResponse: "Prunes" },
   { q: "What other name does “corn” go by?", response: { a: "Maize", b: "Ethanol", c: "Fructose", d: "Dextrose", }, correctResponse: "Maize" },
   { q: "Jim enters a train wearing a blue hat. The train he's on is going 60 MPH towards LA, meanwhile his sister is on another train going 50 MPH heading towards the same city. After 5 hours of travel, what color is Jim's hat??", response: { a: "300 miles", b: "Red", c: "250 miles", d: "Blue", }, correctResponse: "Blue" }
- 
+
 ]
 
 // event listener listens to the view highscore link and sends user to the current highscores.
@@ -41,6 +42,7 @@ highscoreList.setAttribute("class", "d-none");
 // hides the submit and back to start button upon start
 submitBtn.style.display = "none";
 goBack.style.display = "none";
+highscoreClear.style.display = "none";
 
 // starts the game and sets up the game for the first question.
 function startGame() {
@@ -59,14 +61,17 @@ function displayQuestion() {
 
 // timer that counts down during the course of the game
 function displayTimer() {
-  timeLeft = setInterval(function () {
-    remainingTime.textContent = ("Timer: " + timer--)
-    // prevents timer from dropping below 0
-    if (timer < 0) {
-      clearInterval(timeLeft)
-      endGame()
-    }
-  }, 1000)
+  minusTime = setTimeout(function () {
+    remainingTime.textContent = ("Timer: " + timer)
+    timeLeft = setInterval(function () {
+      remainingTime.textContent = ("Timer: " + timer--)
+      // prevents timer from dropping below 0 on its own
+      if (timer < 0) {
+        clearInterval(timeLeft)
+        endGame()
+      }
+    }, 1000)
+  }, 10)
 }
 
 // Generates the buttons, empties the text within the buttons for following questions, fills in the buttons with text from the responses in the questionResponse object, and appends the response to the responses list as a button.
@@ -100,12 +105,20 @@ function checkResponse(event) {
       // Incorrect answers are decremented by 10 seconds on the timer
       result.textContent = "Incorrect"
       clearInterval(timeLeft)
-      subtractTime = parseInt(timeLeft)
       timer -= 10;
-      displayTimer()
-      setTimeout(function () {
-        result.textContent = ""
-      }, 1000)
+      // checks for timer to be less than 0 due to incorrect answer inputs
+      if (timer < 0) {
+        endGame()
+        displayTimer()
+        setTimeout(function () {
+          result.textContent = ""
+        }, 1000)
+      } else {
+        displayTimer()
+        setTimeout(function () {
+          result.textContent = ""
+        }, 1000)
+      }
     }
     questionNumber++;
     displayQuestion();
@@ -124,6 +137,7 @@ function backToStart() {
   intro.textContent = "Answer the questions that appear by clicking on the answer you believe is correct. Wrong answers will deduct time from the timer. Your score is determined by how much time is remaining when you answer the last question. ";
   h1Body.textContent = "Quiz Challenge";
   goBack.style.display = "none";
+  highscoreClear.style.display = "none"
   highscoreList.setAttribute("class", "d-none");
   questionNumber = 0;
   questionResponse[0];
@@ -140,9 +154,10 @@ function printHighscores() {
   submitBtn.style.display = "none";
   h1Body.textContent = "High Scores";
   goBack.style.display = "block";
+  highscoreClear.style.display = "block"
   startBtn.style.display = "none";
   intro.textContent = "";
-  }
+}
 
 // Takes user to highscore page after entering their name and clicking the submit button. 
 function getHighscores() {
@@ -151,6 +166,14 @@ function getHighscores() {
   highscoreList.appendChild(nameLi);
   printHighscores()
 }
+
+// Add event listener to remove the highscores from the highscore list
+clearHighscores.addEventListener("click", function () {
+  while (highscoreList.firstChild) {
+    highscoreList.removeChild(highscoreList.firstChild)
+  }
+  printHighscores()
+});
 
 // ends the game and displays the high score board
 function endGame() {

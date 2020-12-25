@@ -1,6 +1,7 @@
 
 /* gives each button the blue background with white text */
 button {
+  margin-top: 5px;
   display: block;
   border: none;
   cursor: pointer;
