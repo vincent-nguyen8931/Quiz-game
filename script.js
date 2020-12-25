@@ -1,15 +1,16 @@
-var h1Body = document.querySelector("h1")
-var intro = document.querySelector("#intro")
-var startBtn = document.querySelector("#start-game")
-var result = document.querySelector("#result")
-var submitBtn = document.querySelector("#submit")
-var highscore = document.querySelector("#highscoreInput")
-var highscoreList = document.querySelector("#highscoresList")
-var responses = document.querySelector("#Responses")
-var remainingTime = document.querySelector("#Timer")
-var timeLeft = 0
-var timer = 120
-var questionNumber = 0
+var h1Body = document.querySelector("h1");
+var intro = document.querySelector("#intro");
+var startBtn = document.querySelector("#start-game");
+var result = document.querySelector("#result");
+var submitBtn = document.querySelector("#submit");
+var goBack = document.querySelector("#backToStart")
+var highscore = document.querySelector("#highscoreInput");
+var highscoreList = document.querySelector("#highscoresList");
+var responses = document.querySelector("#Responses");
+var remainingTime = document.querySelector("#Timer");
+var timeLeft = 0;
+var timer = 90;
+var questionNumber = 0;
 var questionResponse = [
   { q: "What is the temperature of water freezing?", response: { a: "30 F", b: "32 F", c: "33 F", d: "31 F"}, correctResponse: "32 F" },
   { q: "Which is the max amount of times a piece of paper can be folded?", response: { a: "6", b: "8", c: "7", d: "5"}, correctResponse: "7" },
@@ -24,14 +25,16 @@ responses.addEventListener("click", checkResponse);
 startBtn.addEventListener("click", startGame);
 
 // hides the highscore input and list before the game starts
-highscore.setAttribute("class", "d-none")
-highscoreList.setAttribute("class", "d-none")
+highscore.setAttribute("class", "d-none");
+highscoreList.setAttribute("class", "d-none");
 
-// hides the submit button upon start
-submitBtn.style.display = "none"
+// hides the submit and back to start button upon start
+submitBtn.style.display = "none";
+goBack.style.display = "none";
 
 // starts the game and sets up the game for the first question.
 function startGame() {
+  responses.removeAttribute("class", "d-none")
   displayQuestion();
   createButtons();
   displayTimer();
@@ -76,7 +79,6 @@ function createButtons() {
 function checkResponse(event) {
   if (questionNumber < questionResponse.length - 1) {
     var element = event.target
-    console.log(element.textContent, questionResponse[questionNumber].correctResponse)
   
     if (element.matches("button") === true && questionResponse[questionNumber].correctResponse === element.textContent) {
       result.textContent = "Correct"
@@ -97,18 +99,25 @@ function checkResponse(event) {
   }
 }
 
-addEventListener("click", backToStart)
+goBack.addEventListener("click", backToStart);
 
 function backToStart() {
+  startBtn.style.display = "block";
+  intro.textContent = "Answer the questions that appear by clicking on the answer you believe is correct. Wrong answers will deduct time from the timer. Your score is determined by how much time is remaining when you answer the last question. ";
+  h1Body.textContent = "Quiz Challenge";
+  goBack.style.display = "none";
+  highscoreList.setAttribute("class", "d-none");
+  questionNumber = 0;
+  questionResponse[0];
+  timer = 90;
+} 
 
-}
-
-submitBtn.addEventListener("click", highscorePage)
+// add event listern to submit button to start the highscorePage function
+submitBtn.addEventListener("click", highscorePage);
 
 // Takes user to highscore page after entering their name and clicking the submit button
 function highscorePage() {
   localStorage.setItem("highscore", highscore.value);
-  console.log(typeof highscore.value)
   var score = localStorage.getItem("highscore");
   var points = document.createElement("li");
   points.textContent = score;
@@ -117,6 +126,7 @@ function highscorePage() {
   highscore.setAttribute("class", "d-none");
   submitBtn.style.display = "none";
   h1Body.textContent = "High Scores";
+  goBack.style.display = "block";
 }
 
 // ends the game and displays the high score board
