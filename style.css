@@ -1,8 +1,7 @@
 
-.button {
+button {
   display: block;
   border: none;
-  height: 40px;
   cursor: pointer;
   background-color: blue;
   color: white;
@@ -12,13 +11,12 @@
 
 h1 {
   margin-top: 10rem;
+  font-weight: bold;
 }
 
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 18px;
-  width: 800px;
-  margin: auto;
   background-color: rgba(255, 166, 0, 0.664);
 }
 
@@ -34,7 +32,7 @@ input {
 ul {
   list-style-type: none;
   padding: 0;
-  background-color: white;
+  background-color: rgba(255, 166, 0, 0.664);
 }
 /* gives each button the blue background with white text */
 li {

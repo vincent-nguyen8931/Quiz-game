@@ -2,12 +2,10 @@ var h1Body = document.querySelector("h1")
 var intro = document.querySelector("#intro")
 var startBtn = document.querySelector("#start-game")
 var result = document.querySelector("#result")
+var submitBtn = document.querySelector("#submit")
+var highscore = document.querySelector("#highscoreInput")
 var responses = document.querySelector("#Responses")
-var remainingTime = document.querySelector("#time")
-var btn1 = document.querySelector("#button1")
-var btn2 = document.querySelector("#button2")
-var btn3 = document.querySelector("#button3")
-var btn4 = document.querySelector("#button4")
+var remainingTime = document.querySelector("#Timer")
 var timeLeft = 0
 var timer = 120
 var questionNumber = 0
@@ -18,120 +16,72 @@ var questionResponse = [
   { q: "In the US, which car color has the least amount of accidents?", response: { a: "Silver", b: "Blue", c: "Red", d: "White", }, correctResponse: "White" },
   { q: "Which fast food restaurant is the most popular in the US?", response: { a: "Jack in the Box", b: "McDonalds", c: "Burger King", d: "Taco Bell", }, correctResponse: "McDonalds" }
 ]
-// hides the buttons created in the html
-responses.style.display = "none"
+// event listern will wait for responses on any of the buttons when answering a question.
 responses.addEventListener("click", checkResponse);
-// waits for the click of the start button before responding
-startBtn.addEventListener("click", startGame)
-displayTimer()
-// starts the game and continues it each time there is a call
-function startGame() {
-  // if (questionNumber < questionResponse.length) {
 
-  displayQuestion()
-  createButtons() 
-  // createResponses()
-  // checkResponse()
-  // questionNumber++
-  console.log(questionNumber)
-  // } else {
-  //   endGame()
+// waits for the click of the start button before responding
+startBtn.addEventListener("click", startGame);
+
+// hides the highscore input
+highscore.setAttribute("class", "d-none")
+
+// hides the submit button upon start
+submitBtn.style.display = "none"
+
+// starts the game and sets up the game for the first question.
+function startGame() {
+  displayQuestion();
+  createButtons();
+  displayTimer();
 }
-// }
 // makes the questions visible while hiding the landing page information
 function displayQuestion() {
-  responses.style.display = "block"
-  startBtn.style.display = "none"
-  intro.textContent = ""
-  h1Body.textContent = questionResponse[questionNumber].q
+  startBtn.style.display = "none";
+  intro.textContent = "";
+  h1Body.textContent = questionResponse[questionNumber].q;
 }
 // timer that counts down during the course of the game
 function displayTimer() {
   timeLeft = setInterval(function () {
-    remainingTime.textContent = ("Time Remaining: " + timer--)
+    remainingTime.textContent = ("Timer: " + timer--)
+    // prevents timer from dropping below 0
     if (timer < 0) {
       clearInterval(timeLeft)
     }
   }, 1000)
 }
 
+// Generates the buttons, empties the text within the buttons for following questions, fills in the buttons with text from the responses in the questionResponse object, and appends the response to the responses list as a button.
 function createButtons() {
-  // questionResponse[questionNumber].response.forEach(element => {
-  //   var li = document.createElement("button")
-  //   li.setAttribute("class", "button")
-  //   li.textContent = element
-  //   responses.appendChild(li)
-  // });
+    // creates variable holding the object response within the questionResponse object
     var resp = questionResponse[questionNumber].response
+    // takes value of the response object and places them into the answers variable
     var answers = Object.values(resp);
-    console.log(answers)
+    // clears text for the next question value to be entered
     responses.innerHTML = ""
+    // creates the button, sets the class to button, fills the textcontent with answers variable, and appends the child to the responses list
     answers.forEach(element => {
-      var li = document.createElement("button")
-      li.setAttribute("class", "button")
-      li.textContent = element
-      responses.appendChild(li)
+      var li = document.createElement("button");
+      li.setAttribute("class", "button");
+      li.textContent = element;
+      responses.appendChild(li);
     });
-
-  // // var answers = []
-  // // answers.forEach()
-  // var li = document.createElement("button")
-  // // li.setAttribute("id", "button1")
-  // // li.textContent = questionResponse[questionNumber].response.a
-  // responses.appendChild(li)
-  // var li = document.createElement("button")
-  // li.setAttribute("id", "button2")
-  // // li.textContent = questionResponse[questionNumber].response.b
-  // responses.appendChild(li)
-  // var li = document.createElement("button")
-  // li.setAttribute("id", "button3")
-  // // li.textContent = questionResponse[questionNumber].response.c
-  // responses.appendChild(li)
-  // var li = document.createElement("button")
-  // li.setAttribute("id", "button4")
-  // // li.textContent = questionResponse[questionNumber].response.d
-  // responses.appendChild(li)
 }
 
-
-// generate the responses for each question
-function createResponses() {
-  var resp = questionResponse[questionNumber].response
-    var answers = Object.values(resp);
-    console.log(answers)
-    answers.forEach(element => {
-      var li = document.createElement("button")
-      li.setAttribute("class", "button")
-      li.textContent = element
-      responses.replaceChild(li)
-    });
-  // btn1.textContent = questionResponse[questionNumber].response.a
-  // btn2.textContent = questionResponse[questionNumber].response.b
-  // btn3.textContent = questionResponse[questionNumber].response.c
-  // btn4.textContent = questionResponse[questionNumber].response.d
-}
 // checks the response of the answer and makes sure that there are questions left to ask.
 function checkResponse(event) {
-  // event.stopPropagation();
   if (questionNumber < questionResponse.length - 1) {
     // event.preventDefault()
     var element = event.target
     console.log(element.textContent, questionResponse[questionNumber].correctResponse)
   
-    if (element.matches("li") === true && questionResponse[questionNumber].correctResponse === element.textContent) {
-      
+    if (element.matches("button") === true && questionResponse[questionNumber].correctResponse === element.textContent) {
       result.textContent = "Correct"
-      // startGame()
       setTimeout(function () {
         result.textContent = ""
-      }, 1000)
-    }
-
-
-    else {
-
+      }, 1000);
+    } else {
       result.textContent = "Incorrect"
-      // startGame()
       setTimeout(function () {
         result.textContent = ""
       }, 1000)
@@ -139,23 +89,15 @@ function checkResponse(event) {
     questionNumber++;
     displayQuestion();
     createButtons();
-    // createResponses()
-    // responses.removeEventListener("click", function(event)) {}
-    // startGame()
   } else {
     endGame()
   }
 }
-
-
-
-  // result.textContent = "Incorrect"
-  // setTimeout(function() {
-  //   result.textContent = ""
-  // }, 1000)
-
+// ends the game and displays the high score board
   function endGame() {
-    h1Body.textContent = "High score!"
-    responses.style.display = "none"
+    h1Body.textContent = "Quiz complete!"
+    highscore.setAttribute("class", "d-block")
+    responses.setAttribute("class", "d-none")
+    submitBtn.style.display = "block"
     clearInterval(timeLeft)
   }
