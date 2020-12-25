@@ -4,6 +4,7 @@ var startBtn = document.querySelector("#start-game")
 var result = document.querySelector("#result")
 var submitBtn = document.querySelector("#submit")
 var highscore = document.querySelector("#highscoreInput")
+var highscoreList = document.querySelector("#highscoresList")
 var responses = document.querySelector("#Responses")
 var remainingTime = document.querySelector("#Timer")
 var timeLeft = 0
@@ -22,8 +23,9 @@ responses.addEventListener("click", checkResponse);
 // waits for the click of the start button before responding
 startBtn.addEventListener("click", startGame);
 
-// hides the highscore input
+// hides the highscore input and list before the game starts
 highscore.setAttribute("class", "d-none")
+highscoreList.setAttribute("class", "d-none")
 
 // hides the submit button upon start
 submitBtn.style.display = "none"
@@ -34,12 +36,14 @@ function startGame() {
   createButtons();
   displayTimer();
 }
+
 // makes the questions visible while hiding the landing page information
 function displayQuestion() {
   startBtn.style.display = "none";
   intro.textContent = "";
   h1Body.textContent = questionResponse[questionNumber].q;
 }
+
 // timer that counts down during the course of the game
 function displayTimer() {
   timeLeft = setInterval(function () {
@@ -71,7 +75,6 @@ function createButtons() {
 // checks the response of the answer and makes sure that there are questions left to ask.
 function checkResponse(event) {
   if (questionNumber < questionResponse.length - 1) {
-    // event.preventDefault()
     var element = event.target
     console.log(element.textContent, questionResponse[questionNumber].correctResponse)
   
@@ -90,14 +93,37 @@ function checkResponse(event) {
     displayQuestion();
     createButtons();
   } else {
-    endGame()
+    endGame();
   }
 }
+
+addEventListener("click", backToStart)
+
+function backToStart() {
+
+}
+
+submitBtn.addEventListener("click", highscorePage)
+
+// Takes user to highscore page after entering their name and clicking the submit button
+function highscorePage() {
+  localStorage.setItem("highscore", highscore.value);
+  console.log(typeof highscore.value)
+  var score = localStorage.getItem("highscore");
+  var points = document.createElement("li");
+  points.textContent = score;
+  highscoreList.appendChild(points)
+  highscoreList.setAttribute("class", "d-block");
+  highscore.setAttribute("class", "d-none");
+  submitBtn.style.display = "none";
+  h1Body.textContent = "High Scores";
+}
+
 // ends the game and displays the high score board
   function endGame() {
-    h1Body.textContent = "Quiz complete!"
-    highscore.setAttribute("class", "d-block")
-    responses.setAttribute("class", "d-none")
-    submitBtn.style.display = "block"
-    clearInterval(timeLeft)
+    h1Body.textContent = "Quiz complete!";
+    highscore.setAttribute("class", "d-block");
+    responses.setAttribute("class", "d-none");
+    submitBtn.style.display = "block";
+    clearInterval(timeLeft);
   }
