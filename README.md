@@ -15,9 +15,11 @@ This is a quiz game. It will ask if you would like to start the game. After star
 * [Start Game](#Start-game)
 * [Display timer](#Display-timer)
 * [Display question](#Display-question)
-* [Generate responses](#Generate-responses)
+* [Create buttons](#Create-buttons)
 * [Check response](#Check-response)
 * [End game](#End-game)
+* [Input highscore](#Input-highscore)
+
 
 [Credits](#Credits)<br />
 [License](#License)
@@ -45,83 +47,102 @@ What is added
 Start game
 -----------------------
 
-This function will run the bulk of the program by calling other functions created. 
+This function will begin the game and each time the quiz is restarted. 
 ```
 function startGame() {
-  if (questionNumber < questionResponse.length) {
-    displayTimer()
-    displayQuestion()
-    createResponses()
-    checkResponse()
-    // questionNumber++
-  } else {
-    endGame()
-  }
+  responses.removeAttribute("class", "d-none")
+  displayQuestion();
+  createButtons();
+  displayTimer();
 }
 ```
 
 Display timer
 ---------------
-The time is displayed on the top right of the question box. A feature to be implemented is decrementing time for incorrect guesses.
+The time is displayed on the top right of the question box. The setTimeout function is to update the time immediately upon answering a question incorrectly.
 ```
-function displayTimer(timeLeft) {
-  var timeLeft = setInterval(function() { 
-    remainingTime.textContent = ("Time Remaining: " + timer--)
-     if (timer < 0) {
-       clearInterval(timeLeft)
-     }}, 1000)
+function displayTimer() {
+  minusTime = setTimeout(function () {
+    remainingTime.textContent = ("Timer: " + timer)
+    timeLeft = setInterval(function () {
+      remainingTime.textContent = ("Timer: " + timer--)
+      // prevents timer from dropping below 0 on its own
+      if (timer < 0) {
+        clearInterval(timeLeft)
+        endGame()
+      }
+    }, 1000)
+  }, 10)
+}
 ```
 
 Display question
 -----------
-The questions will be displayed by showing the buttons that allow for answering, hiding the start button, hiding the landing page text, and generating the question in the h1 tag.
+The questions will be displayed by hiding the start button, hiding the landing page text, and generating the question in the h1 tag.
 ```
 function displayQuestion() {
-  responses.style.display = "block" 
   startBtn.style.display = "none"
   intro.textContent = ""
   h1Body.textContent = questionResponse[questionNumber].q
 }
 ```
 
-Generate responses
+Create buttons
 ----------------
-The possible choices for the answer generated in the array will be inserted into each button that is created for answers from the HTML.
+Buttons are created from the response object within the questionResponse array. A forEach is called to create a button, give it the class "button", fill its textContent with the possible responses, and append the child to the responses list. These buttons are what allows the player to give their answer to the quiz questions.
 ```
-function createResponses() {
-  btn1.textContent = questionResponse[questionNumber].response.a
-  btn2.textContent = questionResponse[questionNumber].response.b
-  btn3.textContent = questionResponse[questionNumber].response.c
-  btn4.textContent = questionResponse[questionNumber].response.d
+function createButtons() {
+  // creates variable holding the object response within the questionResponse object
+  var resp = questionResponse[questionNumber].response
+  // takes value of the response object and places them into the answers variable
+  var answers = Object.values(resp);
+  // clears text for the next question value to be entered
+  responses.innerHTML = ""
+  // creates the button, sets the class to button, fills the textcontent with answers variable, and appends the child to the responses list
+  answers.forEach(element => {
+    var li = document.createElement("button");
+    li.setAttribute("class", "button");
+    li.textContent = element;
+    responses.appendChild(li);
+  });
 }
 ```
 
 Check response
 ----------
-This function checks the user's response against the correct answers set in the questions array. It will also check to make sure that there is a question that exists to prevent the program from asking more questions than exist.
+This function checks the user's response against the correct answers set in the questions array. It will also check to make sure that there is a question that exists to prevent the program from asking more questions than exist. This snippet shows how this is accomplished.
 ```
-function checkResponse() {
-  if (questionNumber < questionResponse.length -1) {
-  responses.addEventListener("click", function(event) {
-    event.preventDefault()
+function checkResponse(event) {
+  if (questionNumber < questionResponse.length - 1) {
     var element = event.target
-    if (element.matches("#button1") === true && questionResponse[questionNumber].correctResponse === "a") {
-      result.textContent = "Correct"
-      startGame()
-      setTimeout(function() {
-        result.textContent = ""
-      }, 1000)
-    }
+    // checks for element matching a button to be true and the text content of said button matches the correctResponse. if true then the answer is correct.
+    if (element.matches("button") === true && questionResponse[questionNumber].correctResponse === element.textContent) {
 ```
 
 End game
 --------------------
-This ends the game by displaying the high scores, removing all the responses, and stopping the timer.
+This ends the game by allowing the user to enter their high scores, removing all the responses, and stopping the timer.
 ```
 function endGame() {
-  h1Body.textContent = "High score!"
-  responses.style.display = "none"
-  clearInterval(timeLeft)
+  h1Body.textContent = "Quiz complete!";
+  highscore.setAttribute("class", "d-block");
+  responses.setAttribute("class", "d-none");
+  submitBtn.style.display = "block";
+  clearInterval(timeLeft);
+}
+```
+
+Input highscore
+--------
+After the player has entered their name into the input field, they will click the submit button that has an event listener added to it. Here their name and score are added to a list element and then gets appended to the highscore list.
+```
+submitBtn.addEventListener("click", getHighscores);
+
+function getHighscores() {
+  nameLi = document.createElement("li")
+  nameLi.textContent = "name: " + highscore.value + " score: " + timer;
+  highscoreList.appendChild(nameLi);
+  printHighscores()
 }
 ```
 
@@ -134,7 +155,7 @@ I ran into a strange situation where the incrementing variable is called 1 + (n+
 * have the answers increment instead of the start game function
 * remove the click event listener since it appeared as though multiple clicks were being counted despite only a single click being used when I checked in the console logs
 
-The solution still eludes me from these steps.
+The solution reached upon TA assistance is to not have the functions call each other recursively. They recommended that the events should be what moves one function to another. I altered my code to reflect these changes and the game works as intended.
 
 
 Credits

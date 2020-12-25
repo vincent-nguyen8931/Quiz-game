@@ -93,7 +93,7 @@ function createButtons() {
 
 // checks the response of the answer and makes sure that there are questions left to ask.
 function checkResponse(event) {
-  if (questionNumber < questionResponse.length - 1) {
+  if (questionNumber < questionResponse.length-1) {
     var element = event.target
     // checks for element matching a button to be true and the text content of said button matches the correctResponse. if true then the answer is correct.
     if (element.matches("button") === true && questionResponse[questionNumber].correctResponse === element.textContent) {
