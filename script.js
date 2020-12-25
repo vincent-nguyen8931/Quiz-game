@@ -10,14 +10,19 @@ var highscoreList = document.querySelector("#highscoresList");
 var responses = document.querySelector("#Responses");
 var remainingTime = document.querySelector("#Timer");
 var timeLeft = 0;
-var timer = 90;
+var timer = 80;
 var questionNumber = 0;
 var questionResponse = [
   { q: "What is the temperature of water freezing?", response: { a: "30 F", b: "32 F", c: "33 F", d: "31 F" }, correctResponse: "32 F" },
   { q: "Which is the max amount of times a piece of paper can be folded?", response: { a: "6", b: "8", c: "7", d: "5" }, correctResponse: "7" },
   { q: "What do blue whales eat?", response: { a: "Krill", b: "Plankton", c: "Coral", d: "Algae", }, correctResponse: "Krill" },
   { q: "In the US, which car color has the least amount of accidents?", response: { a: "Silver", b: "Blue", c: "Red", d: "White", }, correctResponse: "White" },
-  { q: "Which fast food restaurant is the most popular in the US?", response: { a: "Jack in the Box", b: "McDonalds", c: "Burger King", d: "Taco Bell", }, correctResponse: "McDonalds" }
+  { q: "What year was the very first model of the iPhone released?", response: { a: "2009", b: "2008", c: "2007", d: "2006", }, correctResponse: "2007" },
+  { q: "What was Twitter’s original name??", response: { a: "Shout Box", b: "Flitter", c: "National Broadcast Service", d: "Twitter", }, correctResponse: "Twitter" },
+  { q: "What is the common name for dried plums?", response: { a: "Prunes", b: "Raisins", c: "Dried plums", d: "Kiwi", }, correctResponse: "Prunes" },
+  { q: "What other name does “corn” go by?", response: { a: "Maize", b: "Ethanol", c: "Fructose", d: "Dextrose", }, correctResponse: "Maize" },
+  { q: "Jim enters a train wearing a blue hat. The train he's on is going 60 MPH towards LA, meanwhile his sister is on another train going 50 MPH heading towards the same city. After 5 hours of travel, what color is Jim's hat??", response: { a: "300 miles", b: "Red", c: "250 miles", d: "Blue", }, correctResponse: "Blue" }
+ 
 ]
 
 // event listener listens to the view highscore link and sends user to the current highscores.
