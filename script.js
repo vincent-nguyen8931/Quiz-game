@@ -4,6 +4,7 @@ var startBtn = document.querySelector("#start-game");
 var result = document.querySelector("#result");
 var submitBtn = document.querySelector("#submit");
 var goBack = document.querySelector("#backToStart")
+var highscoreLink = document.querySelector("#Highscore")
 var highscore = document.querySelector("#highscoreInput");
 var highscoreList = document.querySelector("#highscoresList");
 var responses = document.querySelector("#Responses");
@@ -18,7 +19,11 @@ var questionResponse = [
   { q: "In the US, which car color has the least amount of accidents?", response: { a: "Silver", b: "Blue", c: "Red", d: "White", }, correctResponse: "White" },
   { q: "Which fast food restaurant is the most popular in the US?", response: { a: "Jack in the Box", b: "McDonalds", c: "Burger King", d: "Taco Bell", }, correctResponse: "McDonalds" }
 ]
-// event listern will wait for responses on any of the buttons when answering a question.
+
+// event listener listens to the view highscore link and sends user to the current highscores.
+highscoreLink.addEventListener("click", printHighscores);
+
+// event listener will wait for responses on any of the buttons when answering a question.
 responses.addEventListener("click", checkResponse);
 
 // waits for the click of the start button before responding
@@ -113,23 +118,26 @@ function backToStart() {
   questionNumber = 0;
   questionResponse[0];
   timer = 90;
-  playerTotalStorage = JSON.stringify(localStorage.setItem("nameScore", playerTotalStorage))
 }
 
 // add event listern to submit button to start the highscorePage function
 submitBtn.addEventListener("click", getHighscores);
 
+// prints highscore to scrren by displaying the highscore listing, removing the input field and submit button, then displaying the back to start butotn.
 function printHighscores() {
   highscoreList.setAttribute("class", "d-block");
   highscore.setAttribute("class", "d-none");
   submitBtn.style.display = "none";
   h1Body.textContent = "High Scores";
   goBack.style.display = "block";
+  startBtn.style.display = "none";
+  intro.textContent = "";
   }
 
-  
 
-// Takes user to highscore page after entering their name and clicking the submit button. Another button will appear to send the user back to the start of the quiz.
+
+
+// Takes user to highscore page after entering their name and clicking the submit button. 
 function getHighscores() {
   nameLi = document.createElement("li")
   nameLi.textContent = "name: " + highscore.value + " score: " + timer;
