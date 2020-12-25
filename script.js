@@ -37,7 +37,6 @@ highscoreList.setAttribute("class", "d-none");
 submitBtn.style.display = "none";
 goBack.style.display = "none";
 
-
 // starts the game and sets up the game for the first question.
 function startGame() {
   responses.removeAttribute("class", "d-none")
@@ -60,6 +59,7 @@ function displayTimer() {
     // prevents timer from dropping below 0
     if (timer < 0) {
       clearInterval(timeLeft)
+      endGame()
     }
   }, 1000)
 }
@@ -93,6 +93,10 @@ function checkResponse(event) {
       }, 1000);
     } else {
       result.textContent = "Incorrect"
+      clearInterval(timeLeft)
+      subtractTime = parseInt(timeLeft)
+      timer -= 10;
+      displayTimer()
       setTimeout(function () {
         result.textContent = ""
       }, 1000)
@@ -134,9 +138,6 @@ function printHighscores() {
   intro.textContent = "";
   }
 
-
-
-
 // Takes user to highscore page after entering their name and clicking the submit button. 
 function getHighscores() {
   nameLi = document.createElement("li")
@@ -144,8 +145,6 @@ function getHighscores() {
   highscoreList.appendChild(nameLi);
   printHighscores()
 }
-
-
 
 // ends the game and displays the high score board
 function endGame() {

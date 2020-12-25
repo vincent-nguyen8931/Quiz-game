@@ -10,17 +10,20 @@ button {
   font-family: 'Open Sans', sans-serif;
 }
 
+/* pushes the header quite a ways down from the top of the page and boldens the text for the landing page, all the questions, and highscore page */
 h1 {
   margin-top: 10rem;
   font-weight: bold;
 }
 
+/* changes the background color acoss the entire page, adds a custom font family from google, and sets the font size */
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 18px;
   background-color: rgba(255, 166, 0, 0.664);
 }
 
+/* customized input field for inputting highscore name. pushes the box 10px from the element above it. */
 input {
   height: 50px;
   width: 100%;
@@ -30,11 +33,13 @@ input {
   border: none;
 }
 
+/* makes the buttons that appear not have numbers next to them and makes the border flushed with the text */
 ul {
   list-style-type: none;
   padding: 0;
 }
 
+/* makes the highscore names appear with uniform background color, and no border. */
  .list-group-item {
   border: none;
   height: 30px;
@@ -43,7 +48,6 @@ ul {
   padding: 5px;
   background-color: rgba(255, 166, 0, 0);
   font-size: 1em;
-  font-family: 'Open Sans', sans-serif;
 } 
 
 
